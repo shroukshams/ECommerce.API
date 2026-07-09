@@ -2,6 +2,7 @@
 using ECommerce.Domin.Entities;
 using ECommerce.Domin.Entities.Products;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
