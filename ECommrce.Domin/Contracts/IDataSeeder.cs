@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerce.Domin.Cintracts
+namespace ECommerce.Domin.Contracts
 {
     public interface IDataSeeder
     {

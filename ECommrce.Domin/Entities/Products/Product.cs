@@ -11,8 +11,8 @@ namespace ECommerce.Domin.Entities.Products
         public string PictureUrl { get; set; } = default!;
         public decimal Price { get; set; } 
         public ProductBrand ProductBrand { get; set; } = default!;
-        public int ProductBrandId { get; set; }
+        public int BrandId { get; set; }
 public ProductType ProductType { get; set; } = default!;
-        public int ProductTypeId { get; set; }
+        public int TypeId { get; set; }
     }
 }

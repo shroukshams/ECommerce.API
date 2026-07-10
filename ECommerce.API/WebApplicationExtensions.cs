@@ -1,4 +1,4 @@
-﻿using ECommerce.Domin.Cintracts;
+﻿using ECommerce.Domin.Contracts;
 
 namespace ECommerce.API
 {

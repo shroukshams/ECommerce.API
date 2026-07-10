@@ -1,3 +1,4 @@
+using ECommerce.Application;
 using ECommerce.Infrastructure;
 
 namespace ECommerce.API
@@ -12,6 +13,7 @@ namespace ECommerce.API
 
             builder.Services.AddControllers();
             builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 

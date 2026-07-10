@@ -1,4 +1,4 @@
-﻿using ECommerce.Domin.Cintracts;
+﻿using ECommerce.Domin.Contracts;
 using ECommerce.Domin.Entities;
 using ECommerce.Domin.Entities.Products;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +19,14 @@ namespace ECommerce.Infrastructure.Data.DataSeeding
             {
                 var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
                 if (pendingMigrations.Any())
-                
                     await dbContext.Database.MigrateAsync();
                 
                 var rootPath = Path.Combine(AppContext.BaseDirectory, "DataSeed");
                 await SeedDataIfEmptyAsync<ProductBrand, int>(rootPath, "brands.json", ct);
                 await SeedDataIfEmptyAsync<ProductType, int>(rootPath, "types.json", ct);
+
                 await SeedDataIfEmptyAsync<Product, int>(rootPath, "products.json", ct);
+             
                 var result = await dbContext.SaveChangesAsync(ct);
                 if (result > 0)
                 {
@@ -46,7 +47,7 @@ namespace ECommerce.Infrastructure.Data.DataSeeding
         private async Task SeedDataIfEmptyAsync<T, TKey>(string rootPath, string fileName, CancellationToken ct = default) where T : BaseEntity<TKey>
         {
             {
-                if (dbContext.Set<T>().Any())
+                if (await dbContext.Set<T>().AnyAsync())
                 {
 
                     return;

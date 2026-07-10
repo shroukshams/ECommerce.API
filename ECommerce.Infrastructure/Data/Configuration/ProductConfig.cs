@@ -24,10 +24,10 @@ namespace ECommerce.Infrastructure.Data.Configuration
                 .IsRequired();
             builder.HasOne(p => p.ProductBrand)
                 .WithMany()
-                .HasForeignKey(p => p.ProductBrandId);
+                .HasForeignKey(p => p.BrandId);
             builder.HasOne(p => p.ProductType)
                 .WithMany()
-                .HasForeignKey(p => p.ProductTypeId);
+                .HasForeignKey(p => p.TypeId);
         }
     }
 }

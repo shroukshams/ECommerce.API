@@ -3,19 +3,16 @@ using ECommerce.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ECommerce.Infrastructure.Data.MY_Migration
+namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20260701204628_Initialcreate")]
-    partial class Initialcreate
+    partial class StoreDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +28,9 @@ namespace ECommerce.Infrastructure.Data.MY_Migration
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -49,17 +49,14 @@ namespace ECommerce.Infrastructure.Data.MY_Migration
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductBrandId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductTypeId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductBrandId");
+                    b.HasIndex("BrandId");
 
-                    b.HasIndex("ProductTypeId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Products");
                 });
@@ -102,13 +99,13 @@ namespace ECommerce.Infrastructure.Data.MY_Migration
                 {
                     b.HasOne("ECommerce.Domin.Entities.Products.ProductBrand", "ProductBrand")
                         .WithMany()
-                        .HasForeignKey("ProductBrandId")
+                        .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ECommerce.Domin.Entities.Products.ProductType", "ProductType")
                         .WithMany()
-                        .HasForeignKey("ProductTypeId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
