@@ -12,6 +12,8 @@ namespace ECommerce.Domin.Contracts
         ICollection<Expression<Func<TEntity, object>>> IncludesExpressions { get; }
         Expression<Func<TEntity,bool>>Criteria { get; }
         Expression<Func<TEntity, object>> OrderBY { get; }
+        Expression<Func<TEntity, object>> OrderBYDescending { get; }
+
 
 
     }

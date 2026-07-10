@@ -20,9 +20,9 @@ namespace ECommerce.API.Controllers
         // GET: api/Products
         [HttpGet]
     
-        public async Task <ActionResult<Result<IReadOnlyList<ProductDto>>>> GetAllProducts(int? brandId,int? typeId, CancellationToken ct = default)
+        public async Task <ActionResult<Result<IReadOnlyList<ProductDto>>>> GetAllProducts(ProuductQueryParams queryParams, CancellationToken ct = default)
         {
-          var  result =  await _productService.GetAllProductsAsync(brandId, typeId, ct);
+          var  result =  await _productService.GetAllProductsAsync(queryParams, ct);
             return Ok(result);
         }
         //get by id

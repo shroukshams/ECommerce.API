@@ -27,13 +27,15 @@ namespace ECommerce.Application.Services
             return Result<IReadOnlyList<BrandDto>>.Ok(_mapper.Map<IReadOnlyList<BrandDto>>(brands));
         }
 
-        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(int? brandId, int? typeId, CancellationToken ct = default)
+        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(ProuductQueryParams queryParams, CancellationToken ct = default)
         {
-            var Spec = new ProductwithBrandAndTypeSpec(brandId, typeId);
+            var Spec = new ProductwithBrandAndTypeSpec(queryParams);
 
             var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Spec, ct);
             return Result<IReadOnlyList<ProductDto>>.Ok(_mapper.Map<IReadOnlyList<ProductDto>>(products));
         }
+
+     
 
         public async Task<Result<IReadOnlyList<TypeDto>>> GetAllTypesAsync(CancellationToken ct = default)
         {

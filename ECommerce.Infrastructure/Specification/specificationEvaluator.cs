@@ -9,7 +9,7 @@ namespace ECommerce.Infrastructure.Specification
 {
     public static class specificationEvaluator
     {
-        public static IQueryable<TEntity>CreateQuery<TEntity,TKey>(IQueryable<TEntity>entryPoint,ISpecification<TEntity,TKey>spec) where TEntity : BaseEntity<TKey>
+        public static IQueryable<TEntity> CreateQuery<TEntity, TKey>(IQueryable<TEntity> entryPoint, ISpecification<TEntity, TKey> spec) where TEntity : BaseEntity<TKey>
         {
             var query = entryPoint;
             //2 where
@@ -30,9 +30,17 @@ namespace ECommerce.Infrastructure.Specification
 
             //    }
             //}
-            query= spec.IncludesExpressions.Aggregate(query, (current, nextExp) => current.Include(nextExp));
+            query = spec.IncludesExpressions.Aggregate(query, (current, nextExp) => current.Include(nextExp));
+            //4 order by
+            if (spec.OrderBY != null)
+            {
+                query = query.OrderBy(spec.OrderBY);
+            }
+            else if (spec.OrderBYDescending != null)
+            {
+                query = query.OrderByDescending(spec.OrderBYDescending);
+            }
             return query;
-
         }
     }
 }
