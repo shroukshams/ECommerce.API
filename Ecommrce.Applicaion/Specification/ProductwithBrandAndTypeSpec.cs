@@ -9,11 +9,14 @@ namespace ECommerce.Application.Specification
     public class ProductwithBrandAndTypeSpec : BaseSpecification<Product, int>
     {
         public ProductwithBrandAndTypeSpec(ProuductQueryParams queryParams) : base
-        // (P=>brandId == null || P.ProductBrandId == brandId && (typeId == null || P.ProductTypeId == typeId))
-        (P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId)  && (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId)&&string.IsNullOrWhiteSpace(queryParams.Search) || P.Name.ToLower().Contains(queryParams.Search.ToLower()) )
-        {  AddInclude(P=>P.ProductBrand);
-            AddInclude(P=>P.ProductType);
-            switch(queryParams.Sort)
+            (P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId.Value) &&
+                  (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId.Value) &&
+                  (string.IsNullOrEmpty(queryParams.Search) || P.Name.ToLower().Contains(queryParams.Search.ToLower())))
+        {
+            AddInclude(P => P.ProductBrand);
+            AddInclude(P => P.ProductType);
+
+            switch (queryParams.Sort)
             {
                 case ProudectSortOptions.PriceAsc:
                     AddOrderBy(P => P.Price);
@@ -24,8 +27,15 @@ namespace ECommerce.Application.Specification
                 case ProudectSortOptions.NameDesc:
                     AddOrderByDescending(P => P.Name);
                     break;
+                default:
+                    AddOrderBy(P => P.Id);
+                    break;
             }
+
+            // Pagination: تأكد أن المعاملات تتوافق مع تعريف ApplyPagination في BaseSpecification
+            ApplyPagination(queryParams.pageSize, queryParams.PageIndex ?? 1);
         }
+
         public ProductwithBrandAndTypeSpec(int id) : base(P => P.Id == id)
         {
             AddInclude(P => P.ProductBrand);

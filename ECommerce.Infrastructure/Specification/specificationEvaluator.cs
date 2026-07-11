@@ -40,6 +40,11 @@ namespace ECommerce.Infrastructure.Specification
             {
                 query = query.OrderByDescending(spec.OrderBYDescending);
             }
+            if (spec.IsPaginated)
+            {
+                // تأكد من تحديث متغير query هنا
+                query = query.Skip(spec.Skip).Take(spec.TAKE);
+            }
             return query;
         }
     }

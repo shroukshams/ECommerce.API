@@ -17,11 +17,13 @@ namespace ECommerce.Application.Specification
 
         public Expression<Func<TEntity, object>> OrderBYDescending { get; private set; }
 
-        protected   void AddInclude(Expression<Func<TEntity, object>> include)
+
+
+        protected void AddInclude(Expression<Func<TEntity, object>> include)
         {
             IncludesExpressions.Add(include);
         }
-      
+
         public BaseSpecification(Expression<Func<TEntity, bool>> criteria)
         {
             Criteria = criteria;
@@ -35,6 +37,17 @@ namespace ECommerce.Application.Specification
         protected void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescendingExpression)
         {
             OrderBYDescending = orderByDescendingExpression;
+        }
+        // Pagination
+        public int Skip { get; private set; }
+        public int TAKE { get; private set; }
+        public bool IsPaginated { get; private set; }
+
+        public void ApplyPagination(int pagesize, int pageIndex)
+        {
+            Skip = (pageIndex - 1) * pagesize;
+            TAKE = pagesize;
+            IsPaginated = true;
         }
     }
 }
