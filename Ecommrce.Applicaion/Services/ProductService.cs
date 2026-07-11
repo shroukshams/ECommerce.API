@@ -23,19 +23,24 @@ namespace ECommerce.Application.Services
 
         public async Task<Result<IReadOnlyList<BrandDto>>> GetAllBrandsAsync(CancellationToken ct = default)
         {
-            var brands = await _unitOfWork.GetRepository<ProductBrand, int>().GetAllAsync( ct);
+            var brands = await _unitOfWork.GetRepository<ProductBrand, int>().GetAllAsync(ct);
             return Result<IReadOnlyList<BrandDto>>.Ok(_mapper.Map<IReadOnlyList<BrandDto>>(brands));
         }
 
-        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(ProuductQueryParams queryParams, CancellationToken ct = default)
+        public async Task<Result<PaginatedResult<ProductDto>>> GetAllProductsAsync(ProuductQueryParams queryParams, CancellationToken ct = default)
         {
             var Spec = new ProductwithBrandAndTypeSpec(queryParams);
 
             var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Spec, ct);
-            return Result<IReadOnlyList<ProductDto>>.Ok(_mapper.Map<IReadOnlyList<ProductDto>>(products));
+            var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Spec, ct);
+            var data = _mapper.Map<IReadOnlyList<ProductDto>>(Products);
+            var CountSpec = new ProductCountSpecification(queryParams);
+            var CountofProducts = await _unitOfWork.GetRepository<Product, int>().CountAsync(CountSpec);
+            var result = new PaginatedResult<ProductDto>(queryParams.PageIndex, queryParams.pageSize, CountofProducts, data);
+            return Result<PaginatedResult<ProductDto>>.Ok(result);
         }
 
-     
+
 
         public async Task<Result<IReadOnlyList<TypeDto>>> GetAllTypesAsync(CancellationToken ct = default)
         {
@@ -48,8 +53,10 @@ namespace ECommerce.Application.Services
             var Spec = new ProductwithBrandAndTypeSpec(id);
             var product = await _unitOfWork.GetRepository<Product, int>().GetByIDAsync(Spec, ct);
             if (product == null)
-            return Result<ProductDto>.Fail(Erorr.NotFound("PRODUCT_NOT_FOUND_CODE", "Product with ID {id} not found"));
+                return Result<ProductDto>.Fail(Erorr.NotFound("PRODUCT_NOT_FOUND_CODE", "Product with ID {id} not found"));
             return Result<ProductDto>.Ok(_mapper.Map<ProductDto>(product));
         }
+
+
     }
 }

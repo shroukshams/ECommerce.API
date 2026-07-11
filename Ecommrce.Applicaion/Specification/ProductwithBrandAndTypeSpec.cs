@@ -33,7 +33,7 @@ namespace ECommerce.Application.Specification
             }
 
             // Pagination: تأكد أن المعاملات تتوافق مع تعريف ApplyPagination في BaseSpecification
-            ApplyPagination(queryParams.pageSize, queryParams.PageIndex ?? 1);
+            ApplyPagination(queryParams.pageSize, queryParams.PageIndex );
         }
 
         public ProductwithBrandAndTypeSpec(int id) : base(P => P.Id == id)

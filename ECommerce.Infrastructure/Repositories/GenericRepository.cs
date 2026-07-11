@@ -16,6 +16,12 @@ namespace ECommerce.Infrastructure.Repositories
         public void Add(TEinty entity)
         =>dbContext.Set<TEinty>().Add(entity);
 
+        public async Task<int> CountAsync(ISpecification<TEinty, TKey> spec, CancellationToken ct = default)
+        {
+
+            return await specificationEvaluator.CreateQuery(dbContext.Set<TEinty>(), spec).CountAsync(ct);
+        }
+
         public void Delete(TEinty entity)
         =>dbContext.Set<TEinty>().Remove(entity);   
 
